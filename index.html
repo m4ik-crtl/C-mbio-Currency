@@ -1,0 +1,57 @@
+<div style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; background-color: #f8f8ff; padding: 20px; border-radius: 8px; font-family: Arial, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <div style="font-size: 24px; font-weight: bold; color: #333;">USD / BRL</div>
+    <div id="dollar-rate" style="font-size: 36px; font-weight: bold;">Valor Atual</div> <!-- Cotação -->
+    <div id="percent-change" style="font-size: 18px;">Variação Percentual</div> <!-- Variação em % -->
+    <div id="date-time" style="font-size: 16px; margin-top: 10px; color: #666;">Data e Hora</div> <!-- Data e Hora -->
+  </div>
+  
+  <script>
+    const apiKey = 'iQIkucTewS2NgQGzah9qQm0YT'; // Substitua pela sua chave da API
+    const url = `https://fcsapi.com/api-v3/forex/latest?symbol=USD/BRL&access_key=${apiKey}`;
+  
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na rede: ' + response.status);
+        }
+        return response.json();
+      })
+      .then(data => {
+        // Imprime a resposta da API no console para verificar a estrutura
+        console.log('Dados da API:', data);
+  
+        // Verificamos se a estrutura de dados está correta
+        if (data && data.response && data.response.length > 0) {
+          const currencyData = data.response[0]; // Acessa o primeiro item da resposta
+          const currentRate = parseFloat(currencyData['c']); // Cotação atual
+          const percentChange = parseFloat(currencyData['cp']); // Variação percentual
+  
+          // Atualizando o HTML com os valores
+          document.getElementById('dollar-rate').innerText = currentRate.toFixed(2); // Mostra cotação com 2 casas decimais
+          document.getElementById('percent-change').innerText = `Variação: ${percentChange.toFixed(2)}%`; // Variação em %
+  
+          // Formata a data e hora para exibição
+          const date = new Date(); // Data atual (se não houver data na resposta)
+          const formattedDate = date.toLocaleDateString();
+          const formattedTime = date.toLocaleTimeString();
+          document.getElementById('date-time').innerText = `Última atualização: ${formattedDate} ${formattedTime}`;
+  
+          // Verifica se a variação é positiva ou negativa para ajustar a cor
+          const dollarRateElem = document.getElementById('dollar-rate');
+          const percentChangeElem = document.getElementById('percent-change');
+          if (percentChange > 0) {
+            dollarRateElem.style.color = '#dc3545';  // Vermelho para aumento
+            percentChangeElem.style.color = '#dc3545';
+          } else {
+            dollarRateElem.style.color = '#28a745';  // Verde para diminuição
+            percentChangeElem.style.color = '#28a745';
+          }
+        } else {
+          console.error('Erro: Estrutura de dados inesperada', data);
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+      });
+  </script>
+  
