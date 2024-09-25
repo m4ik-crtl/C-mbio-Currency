@@ -1,8 +1,8 @@
-<div id="widget-container" style="display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; background-color: #f8f8ff; padding: 20px; border-radius: 8px; font-family: Arial, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); box-sizing: border-box;">
-  <div style="font-size: 2rem; font-weight: bold; color: #333;">USD / BRL</div>
-  <div id="dollar-rate" style="font-size: 3rem; font-weight: bold;">Valor Atual</div> <!-- Cotação -->
-  <div id="percent-change" style="font-size: 1.5rem;">Variação Percentual</div> <!-- Variação em % -->
-  <div id="date-time" style="font-size: 1rem; margin-top: 10px; color: #666;">Data e Hora</div> <!-- Data e Hora -->
+<div id="widget-container" style="display: flex; flex-direction: column; align-items: center; width: 300px; height: 249px; background-color: #f8f8ff; padding: 20px; border-radius: 8px; font-family: Arial, sans-serif; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); box-sizing: border-box;">
+  <div style="font-size: 1.5rem; font-weight: bold; color: #333;">USD / BRL</div>
+  <div id="dollar-rate" style="font-size: 2rem; font-weight: bold;">Valor Atual</div> <!-- Cotação -->
+  <div id="percent-change" style="font-size: 1rem;">Variação Percentual</div> <!-- Variação em % -->
+  <div id="date-time" style="font-size: 0.8rem; margin-top: 10px; color: #666;">Data e Hora</div> <!-- Data e Hora -->
 </div>
 
 <script>
@@ -49,28 +49,3 @@
       console.error('Erro:', error);
     });
 </script>
-
-<style>
-  #widget-container {
-    width: 100%; /* Ocupa 100% da largura disponível */
-    max-width: 400px; /* Largura máxima */
-    padding: 20px;
-    box-sizing: border-box; /* Inclui padding na largura total */
-  }
-
-  /* Responsividade */
-  @media (max-width: 600px) {
-    #widget-container {
-      padding: 15px;
-    }
-    #dollar-rate {
-      font-size: 2.5rem; /* Ajusta o tamanho da fonte para telas menores */
-    }
-    #percent-change {
-      font-size: 1.25rem; /* Ajusta o tamanho da fonte para telas menores */
-    }
-    #date-time {
-      font-size: 0.9rem; /* Ajusta o tamanho da fonte para telas menores */
-    }
-  }
-</style>
