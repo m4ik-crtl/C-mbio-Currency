@@ -13,43 +13,51 @@
   const apiKey = 'iQIkucTewS2NgQGzah9qQm0YT'; // Substitua pela sua chave da API
   const url = `https://fcsapi.com/api-v3/forex/latest?symbol=USD/BRL&access_key=${apiKey}`;
 
-  fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Erro na rede: ' + response.status);
-      }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Dados da API:', data);
-
-      if (data && data.response && data.response.length > 0) {
-        const currencyData = data.response[0];
-        const currentRate = parseFloat(currencyData['c']);
-        const percentChange = parseFloat(currencyData['cp']);
-
-        document.getElementById('dollar-rate').innerText = currentRate.toFixed(2);
-        document.getElementById('percent-change').innerText = `Variação: ${percentChange.toFixed(2)}%`;
-
-        const date = new Date();
-        const formattedDate = date.toLocaleDateString();
-        const formattedTime = date.toLocaleTimeString();
-        document.getElementById('date-time').innerText = `Última atualização: ${formattedDate} ${formattedTime}`;
-
-        const dollarRateElem = document.getElementById('dollar-rate');
-        const percentChangeElem = document.getElementById('percent-change');
-        if (percentChange > 0) {
-          dollarRateElem.style.color = '#dc3545';  // Vermelho para aumento
-          percentChangeElem.style.color = '#dc3545';
-        } else {
-          dollarRateElem.style.color = '#28a745';  // Verde para diminuição
-          percentChangeElem.style.color = '#28a745';
+  function fetchExchangeRate() {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na rede: ' + response.status);
         }
-      } else {
-        console.error('Erro: Estrutura de dados inesperada', data);
-      }
-    })
-    .catch(error => {
-      console.error('Erro:', error);
-    });
+        return response.json();
+      })
+      .then(data => {
+        console.log('Dados da API:', data);
+
+        if (data && data.response && data.response.length > 0) {
+          const currencyData = data.response[0];
+          const currentRate = parseFloat(currencyData['c']);
+          const percentChange = parseFloat(currencyData['cp']);
+
+          document.getElementById('dollar-rate').innerText = currentRate.toFixed(2);
+          document.getElementById('percent-change').innerText = `Variação: ${percentChange.toFixed(2)}%`;
+
+          const date = new Date();
+          const formattedDate = date.toLocaleDateString();
+          const formattedTime = date.toLocaleTimeString();
+          document.getElementById('date-time').innerText = `Última atualização: ${formattedDate} ${formattedTime}`;
+
+          const dollarRateElem = document.getElementById('dollar-rate');
+          const percentChangeElem = document.getElementById('percent-change');
+          if (percentChange > 0) {
+            dollarRateElem.style.color = '#dc3545';  // Vermelho para aumento
+            percentChangeElem.style.color = '#dc3545';
+          } else {
+            dollarRateElem.style.color = '#28a745';  // Verde para diminuição
+            percentChangeElem.style.color = '#28a745';
+          }
+        } else {
+          console.error('Erro: Estrutura de dados inesperada', data);
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+      });
+  }
+
+  // Chama a função inicialmente
+  fetchExchangeRate();
+
+  // Atualiza a cada 60 segundos (1 minuto)
+  setInterval(fetchExchangeRate, 60000);
 </script>
