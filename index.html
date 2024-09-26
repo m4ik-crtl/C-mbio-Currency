@@ -1,72 +1,14 @@
-<div id="widget-container" style="display: flex; flex-direction: column; align-items: center; height: 249px; background-color: #FFFFFF; padding: 20px; font-family: Arial, sans-serif; box-sizing: border-box;">
-  <div style="font-size: 1.5rem; font-weight: bold; color: #333; display: flex; align-items: center;">
-    <img src="https://flagcdn.com/us.svg" alt="USA Flag" style="width: 20px; height: 20px; margin-right: 5px;">
-    USD / BRL
-    <img src="https://flagcdn.com/br.svg" alt="Brazil Flag" style="width: 20px; height: 20px; margin-left: 5px;">
-  </div>
-  <div id="dollar-rate" style="font-size: 2rem; font-weight: bold;">Valor Atual</div> <!-- Cotação -->
-  <div id="percent-change" style="font-size: 1rem;">Variação Percentual</div> <!-- Variação em % -->
-  <div id="date-time" style="font-size: 0.8rem; margin-top: 10px; color: #666;">Data e Hora</div> <!-- Data e Hora -->
-</div>
-
-<script>
-  const apiKey = 'iQIkucTewS2NgQGzah9qQm0YT'; // Substitua pela sua chave da API
-  const url = `https://fcsapi.com/api-v3/forex/latest?symbol=USD/BRL&access_key=${apiKey}`;
-
-  function fetchExchangeRate() {
-    const now = new Date();
-    const dayOfWeek = now.getDay();  // 0 = Domingo, 1 = Segunda-feira, ..., 6 = Sábado
-    const hours = now.getHours();
-
-    // Verifica se o dia é de segunda a sexta (1-5) e se a hora está entre 09:00 e 18:00
-    if (dayOfWeek >= 1 && dayOfWeek <= 5 && hours >= 9 && hours < 18) {
-      fetch(url)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Erro na rede: ' + response.status);
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Dados da API:', data);
-
-          if (data && data.response && data.response.length > 0) {
-            const currencyData = data.response[0];
-            const currentRate = parseFloat(currencyData['c']);
-            const percentChange = parseFloat(currencyData['cp']);
-
-            document.getElementById('dollar-rate').innerText = currentRate.toFixed(2);
-            document.getElementById('percent-change').innerText = `Variação: ${percentChange.toFixed(2)}%`;
-
-            const date = new Date();
-            const formattedDate = date.toLocaleDateString();
-            const formattedTime = date.toLocaleTimeString();
-            document.getElementById('date-time').innerText = `Última atualização: ${formattedDate} ${formattedTime}`;
-
-            const dollarRateElem = document.getElementById('dollar-rate');
-            const percentChangeElem = document.getElementById('percent-change');
-            if (percentChange > 0) {
-              dollarRateElem.style.color = '#dc3545';  // Vermelho para aumento
-              percentChangeElem.style.color = '#dc3545';
-            } else {
-              dollarRateElem.style.color = '#28a745';  // Verde para diminuição
-              percentChangeElem.style.color = '#28a745';
-            }
-          } else {
-            console.error('Erro: Estrutura de dados inesperada', data);
-          }
-        })
-        .catch(error => {
-          console.error('Erro:', error);
-        });
-    } else {
-      console.log('Fora do horário de atualização.');
+    <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+    </div>
+    
+</body>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+    {
+    "symbol": "FX_IDC:USDBRL",
+    "width": "350",
+    "isTransparent": false,
+    "colorTheme": "light",
+    "locale": "br"
     }
-  }
-
-  // Chama a função inicialmente
-  fetchExchangeRate();
-
-  // Atualiza a cada 30 minutos (1800000 ms)
-setInterval(fetchExchangeRate, 60000);
-</script>
+    </script>
